@@ -182,6 +182,7 @@ class NetworkProps:
     def run(self):
         """Run method that performs all the real work"""
         # show the dialog
+        self.dlg.manageGui()
         self.dlg.show()
         # Run the dialog event loop
         result = self.dlg.exec_()

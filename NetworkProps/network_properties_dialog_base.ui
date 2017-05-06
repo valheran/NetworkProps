@@ -62,104 +62,12 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
      <string>Node Characteristics</string>
     </attribute>
-    <widget class="QTableWidget" name="tbl_Summary">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>190</y>
-       <width>171</width>
-       <height>161</height>
-      </rect>
-     </property>
-     <property name="rowCount">
-      <number>6</number>
-     </property>
-     <property name="columnCount">
-      <number>1</number>
-     </property>
-     <attribute name="horizontalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="verticalHeaderDefaultSectionSize">
-      <number>21</number>
-     </attribute>
-     <row>
-      <property name="text">
-       <string>I Node</string>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>7</pointsize>
-       </font>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>Y Node</string>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>7</pointsize>
-       </font>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>X Node</string>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>7</pointsize>
-       </font>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>C Node</string>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>7</pointsize>
-       </font>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>Total Nodes</string>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>7</pointsize>
-       </font>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>Segments</string>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>7</pointsize>
-       </font>
-      </property>
-     </row>
-     <column>
-      <property name="text">
-       <string>Count</string>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>7</pointsize>
-       </font>
-      </property>
-     </column>
-    </widget>
     <widget class="QLabel" name="label_4">
      <property name="geometry">
       <rect>
@@ -468,6 +376,86 @@
       <string>Ratios</string>
      </property>
     </widget>
+    <widget class="QTableWidget" name="tbl_Summary">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>190</y>
+       <width>191</width>
+       <height>221</height>
+      </rect>
+     </property>
+     <row>
+      <property name="text">
+       <string>I Nodes</string>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>7</pointsize>
+       </font>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Y Nodes</string>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>7</pointsize>
+       </font>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>X Nodes</string>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>7</pointsize>
+       </font>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>C Nodes</string>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>7</pointsize>
+       </font>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Total Nodes</string>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>7</pointsize>
+       </font>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Total Segments</string>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>7</pointsize>
+       </font>
+      </property>
+     </row>
+     <column>
+      <property name="text">
+       <string>Count</string>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>7</pointsize>
+       </font>
+      </property>
+     </column>
+    </widget>
    </widget>
    <widget class="QWidget" name="tab_2">
     <attribute name="title">
@@ -486,7 +474,7 @@
       <enum>QTabWidget::West</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_6">
       <attribute name="title">
@@ -675,19 +663,6 @@
     <string>Input Line Layer</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_11">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>150</y>
-     <width>46</width>
-     <height>13</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
@@ -769,9 +744,32 @@
      </rect>
     </property>
     <property name="text">
-     <string>Rectified Polylines</string>
+     <string>Segmented Polylines</string>
     </property>
    </widget>
+  </widget>
+  <widget class="QLineEdit" name="led_tolerance">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>150</y>
+     <width>41</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_14">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>150</y>
+     <width>46</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Tolerance</string>
+   </property>
   </widget>
  </widget>
  <resources/>
