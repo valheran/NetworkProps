@@ -60,7 +60,7 @@ class NodeCounter:
         self.tolerance = float(tolerance)
         self.pr = layer.dataProvider()
         crsString = self.layer.crs().authid()
-        uri = "Point?&crs={}".format(crsString)
+        uri = "LineString?&crs={}".format(crsString)
         self.seglayer = QgsVectorLayer(uri, "segments", "memory")
         self.segpr = self.seglayer.dataProvider()
         #if not layer.isValid():
@@ -141,7 +141,7 @@ class NodeCounter:
                         #print geom.asPolyline()
                         #print geom
                         #print elem.id()
-                        pr.changeGeometryValues({elem.id(): geom})
+                        self.pr.changeGeometryValues({elem.id(): geom})
                         
                         self.layer.updateExtents()
                     
@@ -178,7 +178,8 @@ class NodeCounter:
         k=0
         i_nodes = []
         x_nodes = []
-        y_nodes = []
+        y_nodes_temp = []
+        y_nodes=[]
         c_nodes = []
     #inspect every node for proximity within tolerance of another node,
     #and record how many are in the threshold.
@@ -195,7 +196,7 @@ class NodeCounter:
             elif matchcount == 1:
                 c_nodes.append(node)
             elif matchcount == 2:
-                y_nodes.append(node)
+                y_nodes_temp.append(node)
             elif matchcount >=3:
                 x_nodes.append(node)
                 #may want to check this definition
@@ -203,10 +204,24 @@ class NodeCounter:
         #print "I nodes", i_nodes
         #print "Y nodes", y_nodes
         #print "X nodes", x_nodes
+        #remove exact duplicates
         i_nodes = list(set(i_nodes))
-        y_nodes = list(set(y_nodes))
+        y_nodes_temp = list(set(y_nodes_temp))
         x_nodes = list(set(x_nodes))
         c_nodes = list(set(c_nodes))
+        
+        #remove duplicates within tolerance
+        j=0
+        for node in y_nodes_temp:
+            searchList = y_nodes_temp[(j+1):]
+            j=j+1
+            single = True
+            for othernode in searchList:
+                if node.compare(othernode, self.tolerance):
+                   single = False
+            if single:
+                y_nodes.append(node)
+                
         
         return i_nodes,y_nodes,x_nodes, c_nodes
         
@@ -302,7 +317,9 @@ class NodeCounter:
             aziList.append(Azi)
             
         return lenList, aziList
-        
+    
+    def createSeglayer(self):
+        return self.seglayer
 
         
         
