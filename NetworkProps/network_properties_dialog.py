@@ -65,14 +65,31 @@ class NetworkPropsDialog(QtGui.QDialog, FORM_CLASS):
         
         
         self.manageGui()
-        ##initialise matplot figures/canvas
-        self.segLengthFigure = InitFigure(self.lyt_segmentLength, self.wdg_toolLength)
-        self.segOriFigure = InitRose(self.lyt_segmentOri, self.wdg_toolOri)
-        self.ternaryFigure = InitTernary(self.lyt_classification, self.wdg_toolClass)
-        
         ##initialise buttons
         self.btn_run.clicked.connect(lambda:self.runAnalysis(utils.getVectorLayerByName(self.cbx_inputLayer.currentText()),self.led_tolerance.text()))
         self.btn_reset.clicked.connect(self.resetData)
+        
+    def setupFigures(self):
+        ##initialise matplot figures/canvas
+        self.segLengthFigure = InitHist(self.lyt_segmentLength, self.wdg_toolLength)
+        self.segOriFigure = InitRose(self.lyt_segmentOri, self.wdg_toolOri)
+        self.ternaryFigure = InitTernary(self.lyt_classification, self.wdg_toolClass)
+        #initialise Fry plot figures
+        self.fryXnode = InitScatter(self.lyt_fryplot, self.wdg_toolfry, col=0, row=0)
+        self.fryYnode = InitScatter(self.lyt_fryplot, self.wdg_toolfry, col=1, row=0)
+        self.fryInode = InitScatter(self.lyt_fryplot, self.wdg_toolfry, col = 0, row=2)
+        self.fryCnode = InitScatter(self.lyt_fryplot, self.wdg_toolfry, col=1, row=2)
+        #initialise Fty Length plot figures
+        self.frylenXnode = InitHist(self.lyt_frylen, self.wdg_toolfrylen, col=0, row=0)
+        self.frylenYnode = InitHist(self.lyt_frylen, self.wdg_toolfrylen, col=1, row=0)
+        self.frylenInode = InitHist(self.lyt_frylen, self.wdg_toolfrylen, col=0, row=2)
+        self.frylenCnode = InitHist(self.lyt_frylen, self.wdg_toolfrylen, col=1, row=2)
+        #initialise Fry vector orientation figures
+        self.fryvecXnode = InitRose(self.lyt_fryvec, self.wdg_toolfryvec, col=0, row=0)
+        self.fryvecYnode = InitRose(self.lyt_fryvec, self.wdg_toolfryvec, col=1, row=0)
+        self.fryvecInode = InitRose(self.lyt_fryvec, self.wdg_toolfryvec, col=0, row=2)
+        self.fryvecCnode = InitRose(self.lyt_fryvec, self.wdg_toolfryvec, col=1, row=2)
+        
         
     def manageGui(self):
         
@@ -87,6 +104,20 @@ class NetworkPropsDialog(QtGui.QDialog, FORM_CLASS):
         self.tbl_Summary.clearContents()
         self.tbl_ratios.clearContents()
         self.led_tolerance.clear()
+        self.fryXnode.resetFigure() 
+        self.fryYnode.resetFigure() 
+        self.fryInode.resetFigure()
+        self.fryCnode.resetFigure() 
+       
+        self.frylenXnode.resetFigure() 
+        self.frylenYnode.resetFigure()
+        self.frylenInode.resetFigure()
+        self.frylenCnode.resetFigure()
+       
+        self.fryvecXnode.resetFigure() 
+        self.fryvecYnode.resetFigure()
+        self.fryvecInode.resetFigure()
+        self.fryvecCnode.resetFigure()
         
     def showFileBrowser(self, target):
         self.target.setText(QtGui.QFileDialog.getSaveFileName(self, 'Save As', '/',"*.shp"))
@@ -106,7 +137,7 @@ class NetworkPropsDialog(QtGui.QDialog, FORM_CLASS):
         self.tbl_Summary.setItem(0,0, QtGui.QTableWidgetItem(str(len(inodes))))
         self.tbl_Summary.setItem(1,0, QtGui.QTableWidgetItem(str(len(ynodes))))
         self.tbl_Summary.setItem(2,0, QtGui.QTableWidgetItem(str(len(xnodes))))
-        self.tbl_Summary.setItem(3,0, QtGui.QTableWidgetItem(strlen(cnodes))))
+        self.tbl_Summary.setItem(3,0, QtGui.QTableWidgetItem(str(len(cnodes))))
         self.tbl_Summary.setItem(4,0, QtGui.QTableWidgetItem(str(totalnodes)))
         self.tbl_Summary.setItem(5,0, QtGui.QTableWidgetItem(str(len(lenList))))
         self.tbl_Summary.setItem(6,0, QtGui.QTableWidgetItem("{0:.2f}".format(sum(lenList))))
@@ -137,15 +168,44 @@ class NetworkPropsDialog(QtGui.QDialog, FORM_CLASS):
         self.tbl_segments.setItem(2,0, QtGui.QTableWidgetItem("{0:.2f}".format(np.mean(lenList))))
         self.tbl_segments.setItem(3,0, QtGui.QTableWidgetItem("{0:.2f}".format(np.std(lenList))))
         
-        
-        
         #populate segment plots with data
-        self.segLengthFigure.histPlotter(lenList)
-        self.segOriFigure.rosePlotter(aziList)
+        self.segLengthFigure.histPlotter(lenList, "Segment Lengths")
+        self.segOriFigure.rosePlotter(aziList, "Segment Orientation")
         
         #populate the Classification Plots
         point = (len(xnodes)/totalnodes, len(inodes)/totalnodes, len(ynodes)/totalnodes)
         self.ternaryFigure.ternaryPlotter(point)
+        
+        #perform and plot Fry Analysis
+        if self.chk_fry.isChecked():
+            if len(inodes)>10:
+                iFry = utils.FryAnalysis()
+                ifryX,ifryY,ifryLen, ifryVec = iFry.makeFryplotlists(inodes)
+                self.fryInode.scatterPlotter(ifryX,ifryY, "I Node Fry Plot")
+                self.frylenInode.histPlotter(ifryLen,"I Node Fry Length")
+                self.fryvecInode.rosePlotter(ifryVec, "I Node Fry Vector Orientation")
+            
+            if len(xnodes)>10:
+                xFry = utils.FryAnalysis()
+                xfryX,xfryY,xfryLen, xfryVec = xFry.makeFryplotlists(xnodes)
+                self.fryXnode.scatterPlotter(xfryX,xfryY, "X Node Fry Plot")
+                self.frylenXnode.histPlotter(xfryLen,"X Node Fry Length")
+                self.fryvecXnode.rosePlotter(xfryVec, "X Node Fry Vector Orientation")
+            
+            if len(ynodes)>10:
+                yFry = utils.FryAnalysis()
+                yfryX,yfryY,yfryLen, yfryVec = yFry.makeFryplotlists(ynodes)
+                self.fryYnode.scatterPlotter(yfryX,yfryY, "Y Node Fry Plot")
+                self.frylenYnode.histPlotter(yfryLen,"Y Node Fry Length")
+                self.fryvecYnode.rosePlotter(yfryVec, "Y Node Fry Vector Orientation")
+            
+            if len(cnodes)>10:
+                cFry = utils.FryAnalysis()
+                cfryX,cfryY,cfryLen, cfryVec = cFry.makeFryplotlists(cnodes)
+                self.fryCnode.scatterPlotter(cfryX,cfryY, "C Node Fry Plot")
+                self.frylenCnode.histPlotter(cfryLen,"C Node Fry Length")
+                self.fryvecCnode.rosePlotter(cfryVec, "I Node Fry Vector Orientation")
+        
         #create output layers
         if self.chk_node.isChecked():
             resultnodelayer = nodecounter.createNodelayer(inodes, ynodes, xnodes, cnodes)
@@ -154,12 +214,14 @@ class NetworkPropsDialog(QtGui.QDialog, FORM_CLASS):
             resultseglayer = nodecounter.createSeglayer()
             QgsMapLayerRegistry.instance().addMapLayer(resultseglayer)
         
-class InitFigure:
+class InitHist:
     #this is the fryplot init - will this work for the histogram?
-    def __init__(self, plotTarget, barTarget):
+    def __init__(self, plotTarget, barTarget, col=0, row=0):
          # add matplotlib figure to dialog
         self.plotTarget = plotTarget  
         self.barTarget = barTarget
+        self.col=col
+        self.row=row
         self.setupFigure()
         
     def setupFigure(self):   
@@ -169,7 +231,7 @@ class InitFigure:
         self.mpltoolbar = NavigationToolbar(self.canvas, self.barTarget)
         lstActions = self.mpltoolbar.actions()
         self.mpltoolbar.removeAction(lstActions[7])
-        self.plotTarget.addWidget(self.canvas)
+        self.plotTarget.addWidget(self.canvas, self.row, self.col)
         self.plotTarget.addWidget(self.mpltoolbar)
 
         # and configure matplotlib params
@@ -179,34 +241,87 @@ class InitFigure:
         rcParams["font.fantasy"] = "Comic Sans MS, Arial, Liberation Sans"
         rcParams["font.monospace"] = "Courier New, Liberation Mono"
         
-    def histPlotter(self, lenList):
+    def histPlotter(self, lenList, title):
 
         self.axes.clear()
-        self.axes.set_title("Segment Length Distribution")
+        self.axes.set_title(title)
         x = lenList
         
         count, bin, self.bar = self.axes.hist(x)
         self.figure.canvas.draw()
+
+    def resetFigure(self):
+        #plt.close(self.figure)
+        #self.setupFigure()
+        try:
+            t = [b.remove() for b in self.bar]
+        except:
+            pass
+        self.figure.canvas.draw()
+        
+class InitScatter:
+    #this is the fryplot init - will this work for the histogram?
+    def __init__(self, plotTarget, barTarget, col=0, row=0):
+         # add matplotlib figure to dialog
+        self.plotTarget = plotTarget  
+        self.barTarget = barTarget
+        self.col=col
+        self.row=row
+        self.setupFigure()
+        
+    def setupFigure(self):   
+        self.figure = Figure()
+        self.axes = self.figure.add_subplot(111)
+        self.canvas = FigureCanvas(self.figure)
+        self.mpltoolbar = NavigationToolbar(self.canvas, self.barTarget)
+        lstActions = self.mpltoolbar.actions()
+        self.mpltoolbar.removeAction(lstActions[7])
+        self.plotTarget.addWidget(self.canvas, self.row, self.col)
+        self.plotTarget.addWidget(self.mpltoolbar, self.row +1, self.col)
+
+        # and configure matplotlib params
+        rcParams["font.serif"] = "Verdana, Arial, Liberation Serif"
+        rcParams["font.sans-serif"] = "Tahoma, Arial, Liberation Sans"
+        rcParams["font.cursive"] = "Courier New, Arial, Liberation Sans"
+        rcParams["font.fantasy"] = "Comic Sans MS, Arial, Liberation Sans"
+        rcParams["font.monospace"] = "Courier New, Liberation Mono"
+        
+            
+    def scatterPlotter(self, listX, listY, title):
+
+        self.axes.clear()
+        self.axes.set_title(title, size=9)
+
+        self.scatter = self.axes.scatter(listX,listY,2)
+        self.axes.axis('equal')
+        self.axes.grid(b=True)
+        self.axes.tick_params(labelsize=4)
+        self.canvas.draw()   
         
     def resetFigure(self):
         #plt.close(self.figure)
         #self.setupFigure()
-        t = [b.remove() for b in self.bar]
-        self.figure.canvas.draw()
-        
+        try:
+            self.scatter.remove()
+            self.setupFigure()
+        except:
+            pass
+        self.figure.canvas.draw()       
 
 class InitTernary:
     #initialise the Ternary classification plot
-    def __init__(self, plotTarget, barTarget):
+    def __init__(self, plotTarget, barTarget, col=0, row=0):
          # add matplotlib figure to dialog
         self.plotTarget = plotTarget  
         self.barTarget = barTarget
+        self.col=col
+        self.row=row
         self.figure, self.tax = ternary.figure(scale=1)
         self.canvas = FigureCanvas(self.figure)
         self.mpltoolbar = NavigationToolbar(self.canvas, self.barTarget)
         lstActions = self.mpltoolbar.actions()
         self.mpltoolbar.removeAction(lstActions[7])
-        self.plotTarget.addWidget(self.canvas)
+        self.plotTarget.addWidget(self.canvas, self.row, self.col)
         self.plotTarget.addWidget(self.mpltoolbar)
         
          # and configure matplotlib params
@@ -255,10 +370,12 @@ class InitTernary:
    
 class InitRose:
     #Create a rose diagram
-    def __init__(self, plotTarget, barTarget):
+    def __init__(self, plotTarget, barTarget, col=0, row=0):
          # add matplotlib figure to dialog
         self.plotTarget = plotTarget  
         self.barTarget = barTarget
+        self.col=col
+        self.row=row
         self.setupFigure()
         
     def setupFigure(self):
@@ -270,7 +387,7 @@ class InitRose:
         self.mpltoolbar = NavigationToolbar(self.canvas, self.barTarget)
         lstActions = self.mpltoolbar.actions()
         self.mpltoolbar.removeAction(lstActions[7])
-        self.plotTarget.addWidget(self.canvas)
+        self.plotTarget.addWidget(self.canvas, self.row, self.col)
         self.plotTarget.addWidget(self.mpltoolbar)
 
         # and configure matplotlib params
@@ -280,9 +397,9 @@ class InitRose:
         rcParams["font.fantasy"] = "Comic Sans MS, Arial, Liberation Sans"
         rcParams["font.monospace"] = "Courier New, Liberation Mono" 
   
-    def rosePlotter(self, aziList):
+    def rosePlotter(self, aziList, title):
     
-        self.axes.set_title("Segment Orientation")
+        self.axes.set_title(title)
         angle = 15 #the width of the divisions of the rose diagram. later stage this could be set by value in dialog box
                  ##get data list
         data = aziList
@@ -307,5 +424,8 @@ class InitRose:
     def resetFigure(self):
         #plt.close(self.rosefigure)
         #self.setupFigure()
-        self.bar.remove()
+        try:
+            self.bar.remove()
+        except:
+            pass
     

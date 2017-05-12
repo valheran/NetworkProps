@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>996</width>
-    <height>670</height>
+    <width>1037</width>
+    <height>808</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QDialogButtonBox" name="button_box">
    <property name="geometry">
     <rect>
-     <x>630</x>
-     <y>620</y>
+     <x>670</x>
+     <y>770</y>
      <width>341</width>
      <height>32</height>
     </rect>
@@ -55,10 +55,10 @@
   <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>20</y>
-     <width>741</width>
-     <height>591</height>
+     <x>200</x>
+     <y>10</y>
+     <width>821</width>
+     <height>741</height>
     </rect>
    </property>
    <property name="currentIndex">
@@ -479,8 +479,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>751</width>
-       <height>571</height>
+       <width>821</width>
+       <height>721</height>
       </rect>
      </property>
      <property name="tabPosition">
@@ -493,21 +493,6 @@
       <attribute name="title">
        <string>Segment Length</string>
       </attribute>
-      <widget class="QWidget" name="verticalLayoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>180</x>
-         <y>10</y>
-         <width>521</width>
-         <height>551</height>
-        </rect>
-       </property>
-       <layout class="QVBoxLayout" name="lyt_segmentLength">
-        <property name="spacing">
-         <number>0</number>
-        </property>
-       </layout>
-      </widget>
       <widget class="QTableWidget" name="tbl_segments">
        <property name="geometry">
         <rect>
@@ -584,22 +569,22 @@
         </rect>
        </property>
       </widget>
+      <widget class="QWidget" name="gridLayoutWidget_4">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>10</y>
+         <width>631</width>
+         <height>701</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="lyt_segmentLength"/>
+      </widget>
      </widget>
      <widget class="QWidget" name="tab_7">
       <attribute name="title">
        <string>Segment Orientation</string>
       </attribute>
-      <widget class="QWidget" name="verticalLayoutWidget_3">
-       <property name="geometry">
-        <rect>
-         <x>120</x>
-         <y>20</y>
-         <width>581</width>
-         <height>541</height>
-        </rect>
-       </property>
-       <layout class="QVBoxLayout" name="lyt_segmentOri"/>
-      </widget>
       <widget class="QWidget" name="wdg_toolOri" native="true">
        <property name="geometry">
         <rect>
@@ -610,6 +595,17 @@
         </rect>
        </property>
       </widget>
+      <widget class="QWidget" name="gridLayoutWidget_3">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>10</y>
+         <width>691</width>
+         <height>701</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="lyt_segmentOri"/>
+      </widget>
      </widget>
     </widget>
    </widget>
@@ -617,21 +613,6 @@
     <attribute name="title">
      <string>Classification Plot</string>
     </attribute>
-    <widget class="QWidget" name="verticalLayoutWidget_2">
-     <property name="geometry">
-      <rect>
-       <x>179</x>
-       <y>10</y>
-       <width>551</width>
-       <height>551</height>
-      </rect>
-     </property>
-     <layout class="QVBoxLayout" name="lyt_classification">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-     </layout>
-    </widget>
     <widget class="QWidget" name="wdg_toolClass" native="true">
      <property name="geometry">
       <rect>
@@ -641,6 +622,116 @@
        <height>41</height>
       </rect>
      </property>
+    </widget>
+    <widget class="QWidget" name="gridLayoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>10</y>
+       <width>811</width>
+       <height>701</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="lyt_classification"/>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_4">
+    <attribute name="title">
+     <string>Fry Analysis</string>
+    </attribute>
+    <widget class="QTabWidget" name="tabWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>821</width>
+       <height>711</height>
+      </rect>
+     </property>
+     <property name="tabPosition">
+      <enum>QTabWidget::West</enum>
+     </property>
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="tab_5">
+      <attribute name="title">
+       <string>Fry Plot</string>
+      </attribute>
+      <widget class="QWidget" name="gridLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>0</y>
+         <width>781</width>
+         <height>701</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="lyt_fryplot" columnminimumwidth="0"/>
+      </widget>
+      <widget class="QWidget" name="wdg_toolfry" native="true">
+       <property name="geometry">
+        <rect>
+         <x>9</x>
+         <y>489</y>
+         <width>71</width>
+         <height>51</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_9">
+      <attribute name="title">
+       <string>Fry Vector Length</string>
+      </attribute>
+      <widget class="QWidget" name="gridLayoutWidget_5">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>791</width>
+         <height>711</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="lyt_frylen"/>
+      </widget>
+      <widget class="QWidget" name="wdg_toolfrylen" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>610</y>
+         <width>120</width>
+         <height>80</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_8">
+      <attribute name="title">
+       <string>Fry Vector Orientation</string>
+      </attribute>
+      <widget class="QWidget" name="wdg_toolfryvec" native="true">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>610</y>
+         <width>120</width>
+         <height>80</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QWidget" name="gridLayoutWidget_6">
+       <property name="geometry">
+        <rect>
+         <x>-1</x>
+         <y>-1</y>
+         <width>791</width>
+         <height>711</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="lyt_fryvec"/>
+      </widget>
+     </widget>
     </widget>
    </widget>
   </widget>
@@ -699,7 +790,7 @@
     <rect>
      <x>10</x>
      <y>180</y>
-     <width>201</width>
+     <width>181</width>
      <height>191</height>
     </rect>
    </property>
@@ -749,6 +840,35 @@
     </property>
     <property name="text">
      <string>Create Segment Layer</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="chk_fry">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>110</y>
+      <width>151</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Perform Fry Analysis</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_11">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>130</y>
+      <width>171</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Note Fry Analysis will only occur if there are more than 10 nodes of a given type</string>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>

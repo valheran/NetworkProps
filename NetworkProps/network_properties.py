@@ -183,6 +183,7 @@ class NetworkProps:
         """Run method that performs all the real work"""
         # show the dialog
         self.dlg.manageGui()
+        self.dlg.setupFigures()
         self.dlg.show()
         # Run the dialog event loop
         result = self.dlg.exec_()
