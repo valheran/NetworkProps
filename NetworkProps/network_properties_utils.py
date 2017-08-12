@@ -56,11 +56,19 @@ class NodeCounter:
     # and determines their type
     def __init__(self,layer, tolerance):
     
-        self.layer = layer
+        self.origlayer = layer
+        crsString = self.origlayer.crs().authid()
         self.tolerance = float(tolerance)
-        self.pr = layer.dataProvider()
-        crsString = self.layer.crs().authid()
         uri = "LineString?&crs={}".format(crsString)
+        self.layer = QgsVectorLayer(uri, "copy", "memory")
+        self.pr = self.layer.dataProvider()
+        
+        feats = [feat for feat in self.origlayer.getFeatures()]
+        attr = self.origlayer.dataProvider().fields().toList()
+        self.pr.addAttributes(attr)
+        self.layer.updateFields()
+        self.pr.addFeatures(feats)
+        QgsMapLayerRegistry.instance().addMapLayer(self.layer)
         self.seglayer = QgsVectorLayer(uri, "segments", "memory")
         self.segpr = self.seglayer.dataProvider()
         #if not layer.isValid():

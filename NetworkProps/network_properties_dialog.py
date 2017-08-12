@@ -341,9 +341,9 @@ class InitTernary:
         #self.plotTarget.addWidget(self.canvas)
         #self.plotTarget.addWidget(self.mpltoolbar)
         self.tax.set_title("Network Classification")
-        self.figure.text(0.33,0.85, "I Nodes")
-        self.figure.text(0.86,0.05, "X Nodes")
-        self.figure.text(0.05,0.05, "Y Nodes")
+        self.figure.text(0.80,0.50, "I Nodes")
+        self.figure.text(0.50,0.05, "X Nodes")
+        self.figure.text(0.05,0.50, "Y Nodes")
         self.tax.clear_matplotlib_ticks()
         self.tax.boundary(linewidth=2.0)
         self.tax.gridlines(color="black", multiple=0.1)
@@ -363,7 +363,10 @@ class InitTernary:
         self.figure.canvas.draw()
     def resetFigure(self):
         #plt.close(self.figure)
-        self.scatter.clear()
+        try:
+            self.scatter.clear()
+        except:
+            pass
         self.setupFigure()
         self.figure.canvas.draw()
         
